@@ -1,7 +1,7 @@
 # Agent Support Client: tests automatisés et CI/CD (Atelier Jour 22)
 
 ![CI](https://github.com/bouincha/agent-support-tests/actions/workflows/ci.yml/badge.svg)
-> Remplacer `VOTRE-COMPTE/VOTRE-REPO` par votre dépôt GitHub: le badge devient vert quand la suite passe.
+
 
 ## Principe (low-code)
 L'agent reste un **workflow Langflow** (aucun code d'agent). Les tests sont des **données**: `tests/golden_cases.json` décrit chaque cas (message, réglages, vérifications). Un runner générique lance le flow en mode headless (`lfx run`), vérifie les règles et produit un rapport. Pour ajouter un test, on ajoute un bloc JSON, pas du code.
