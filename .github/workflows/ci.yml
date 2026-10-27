@@ -1,0 +1,59 @@
+name: CI Agent Support
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"   # lundi 06:00 UTC: tests live hebdomadaires
+
+jobs:
+  tests-mock:
+    name: Tests deterministes (mock LLM)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Installer le runtime Langflow (lfx) et les dependances
+        run: pip install -r requirements-ci.txt
+      - name: Valider que l'export du flow est un JSON correct
+        run: python -c "import json; json.load(open('flows/Support_Client_Observable_patched.json')); print('flow JSON OK')"
+      - name: Lancer la suite de tests (Format, Integration, Policy, Mauvaise entree)
+        run: python tests/run_tests.py --workers 4
+      - name: Publier le rapport
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-tests
+          path: reports/
+      - name: Resume dans l'onglet Actions
+        if: always()
+        run: cat reports/report.md >> "$GITHUB_STEP_SUMMARY"
+
+  tests-live:
+    name: Tests live (vrai modele, optionnel)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: tests-mock
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements-ci.txt
+      - name: Lancer les cas live
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          LIVE_MODEL: openai/gpt-4o-mini
+        run: python tests/run_tests.py --live --workers 2
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-tests-live
+          path: reports/

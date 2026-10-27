@@ -1,0 +1,6 @@
+# Runtime Langflow headless (meme ligne de versions que Langflow 1.7.x)
+lfx==0.2.1
+langchain>=0.3,<1
+langchain-core>=0.3,<1
+langchain-community>=0.3,<1
+langchain-openai>=0.3,<1

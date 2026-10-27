@@ -1,0 +1,708 @@
+{
+ "passed": 29,
+ "total": 29,
+ "rate": 100.0,
+ "regressions": [],
+ "results": [
+  {
+   "id": "F01",
+   "type": "format",
+   "title": "Réponse avec ligne de trace (REQ, statut, durée, étapes)",
+   "passed": true,
+   "seconds": 61.8,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_regex",
+     "ok": true,
+     "detail": "motif attendu: `REQ-[A-F0-9]{6}`"
+    },
+    {
+     "check": "reply_regex",
+     "ok": true,
+     "detail": "motif attendu: succes · \\d+ ms · \\d+ étapes"
+    },
+    {
+     "check": "reply_not_contains",
+     "ok": true,
+     "detail": "texte interdit: 'REQ-INCONNU'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-DB6830` · succes · 6751 ms · 2 étapes · ~$0.000137 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 6734 ms ✓\n- 🔧 `get_order_status` 17 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_F01_jp6qp_e7\\logs"
+  },
+  {
+   "id": "F02",
+   "type": "format",
+   "title": "La trace liste l'étape LLM et l'étape outil",
+   "passed": true,
+   "seconds": 61.8,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'agent_llm'"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'get_order_status'"
+    },
+    {
+     "check": "steps_count",
+     "ok": true,
+     "detail": "étapes: 2 (attendu 2)"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"expediee\", \"detail\": \"Expediee le 22/10, arrivee prevue le 27/10 (transporteur Amana).\"}\n\n---\n`REQ-D44204` · succes · 6797 ms · 2 étapes · ~$0.000140 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 6779 ms ✓\n- 🔧 `get_order_status` 18 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_"
+  },
+  {
+   "id": "F03",
+   "type": "format",
+   "title": "Ticket: identifiant TCK-xxxxxx et colonnes de tickets.csv",
+   "passed": true,
+   "seconds": 61.8,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_regex",
+     "ok": true,
+     "detail": "motif attendu: TCK-[A-F0-9]{6}"
+    },
+    {
+     "check": "csv_header",
+     "ok": true,
+     "detail": "colonnes: ['ticket_id', 'correlation_id', 'timestamp', 'utilisateur', 'priorite', 'resume_masque', 'order_id']"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"ticket_id\": \"TCK-708C97\", \"statut\": \"cree\", \"message\": \"Un conseiller vous recontactera sous 24h.\"}\n\n---\n`REQ-A627B0` · succes · 6739 ms · 2 étapes · ~$0.000163 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 6719 ms ✓\n- 🔧 `create_ticket` 20 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_F0"
+  },
+  {
+   "id": "F04",
+   "type": "format",
+   "title": "executions.csv: colonnes attendues et fichier valide",
+   "passed": true,
+   "seconds": 61.8,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "csv_header",
+     "ok": true,
+     "detail": "colonnes: ['correlation_id', 'timestamp', 'utilisateur', 'statut', 'duree_totale_ms', 'tokens_in', 'tokens_out', 'cout_usd', 'intent', 'outil', 'nb_etapes', 'erreur', 'question_masquee']"
+    },
+    {
+     "check": "csv_parseable",
+     "ok": true,
+     "detail": "1 lignes lues"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-DB6830` · succes · 6787 ms · 2 étapes · ~$0.000137 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 6769 ms ✓\n- 🔧 `get_order_status` 18 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_F04_5rspz6jy\\logs"
+  },
+  {
+   "id": "F05",
+   "type": "format",
+   "title": "steps.csv: colonnes attendues et fichier valide",
+   "passed": true,
+   "seconds": 26.5,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "csv_header",
+     "ok": true,
+     "detail": "colonnes: ['correlation_id', 'timestamp', 'etape', 'type', 'nom', 'duree_ms', 'statut', 'tokens_in', 'tokens_out', 'cout_usd', 'detail_masque']"
+    },
+    {
+     "check": "csv_parseable",
+     "ok": true,
+     "detail": "2 lignes lues"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-664746` · succes · 5977 ms · 2 étapes · ~$0.000137 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 5971 ms ✓\n- 🔧 `get_order_status` 6 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_F05_tjcm_df3\\logs "
+  },
+  {
+   "id": "F06",
+   "type": "format",
+   "title": "Dashboard: KPIs et tableau des exécutions",
+   "passed": true,
+   "seconds": 45.7,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'Taux de succès'"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'Latence moyenne'"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'Coût total'"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'Correlation ID'"
+    }
+   ],
+   "reply_excerpt": "# Dashboard de supervision - Agent Support\n\nFenêtre: **1** dernières exécutions\n\n| Taux de succès | Latence moyenne | Latence p95 | Coût total |\n|---|---|---|---|\n| **100.0 %** | **5942 ms** | 5942 ms | **$0.0001** |\n\n## Alertes\n\n| Alerte | Valeur | Seuil |\n|---|---|---|\n| Alerte Latence | 5942 ms |"
+  },
+  {
+   "id": "I01",
+   "type": "integration",
+   "title": "Suivi de commande: l'agent appelle l'outil Statut commande",
+   "passed": true,
+   "seconds": 26.4,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "tools_called",
+     "ok": true,
+     "detail": "outils appelés: ['get_order_status'] (attendu ['get_order_status'])"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'en_preparation'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-664746` · succes · 5974 ms · 2 étapes · ~$0.000137 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 5968 ms ✓\n- 🔧 `get_order_status` 6 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_I01_rkunrvpf\\logs "
+  },
+  {
+   "id": "I02",
+   "type": "integration",
+   "title": "Question générale: l'agent appelle l'outil FAQ",
+   "passed": true,
+   "seconds": 26.4,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "tools_called",
+     "ok": true,
+     "detail": "outils appelés: ['search_faq'] (attendu ['search_faq'])"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: '14 jours'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"reponse\": \"Retour gratuit sous 14 jours (produit non utilise). Remboursement sous 5 jours ouvres apres reception.\"}\n\n---\n`REQ-89F26C` · succes · 5913 ms · 2 étapes · ~$0.000151 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 5907 ms ✓\n- 🔧 `search_faq` 6 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local"
+  },
+  {
+   "id": "I03",
+   "type": "integration",
+   "title": "Plainte: ticket créé et lié au Correlation ID",
+   "passed": true,
+   "seconds": 26.3,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "tools_called",
+     "ok": true,
+     "detail": "outils appelés: ['create_ticket'] (attendu ['create_ticket'])"
+    },
+    {
+     "check": "ticket_linked",
+     "ok": true,
+     "detail": "reply=REQ-8BBBEF, tickets=['REQ-8BBBEF']"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"ticket_id\": \"TCK-3528DA\", \"statut\": \"cree\", \"message\": \"Un conseiller vous recontactera sous 24h.\"}\n\n---\n`REQ-8BBBEF` · succes · 6132 ms · 2 étapes · ~$0.000163 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 6121 ms ✓\n- 🔧 `create_ticket` 11 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_I0"
+  },
+  {
+   "id": "I04",
+   "type": "integration",
+   "title": "Salutation: aucun outil appelé, une seule étape",
+   "passed": true,
+   "seconds": 26.1,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "tools_none",
+     "ok": true,
+     "detail": "outils appelés: []"
+    },
+    {
+     "check": "steps_count",
+     "ok": true,
+     "detail": "étapes: 1 (attendu 1)"
+    }
+   ],
+   "reply_excerpt": "Bonjour ! Comment puis-je vous aider ?\n\n---\n`REQ-C08803` · succes · 6063 ms · 1 étapes · ~$0.000062 (tokens estimés)\n- 🧠 `agent_llm (1 appel)` 6063 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_I04_i67aaalq\\logs (1 executions enregistrees, fichier present)_\n⚠️ **Alerte Latence**: 6063 ms (seuil 50"
+  },
+  {
+   "id": "I05",
+   "type": "integration",
+   "title": "Le Correlation ID affiché est celui écrit dans executions.csv",
+   "passed": true,
+   "seconds": 26.1,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "exec_cid_matches_reply",
+     "ok": true,
+     "detail": "reply=REQ-62D81D, csv=REQ-62D81D"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-62D81D` · succes · 6125 ms · 2 étapes · ~$0.000137 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 6116 ms ✓\n- 🔧 `get_order_status` 9 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_I05_yfvv9lf4\\logs "
+  },
+  {
+   "id": "I06",
+   "type": "integration",
+   "title": "Le dashboard liste les requêtes précédentes (même Correlation ID)",
+   "passed": true,
+   "seconds": 79.5,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_has_prev_cids",
+     "ok": true,
+     "detail": "attendus: ['REQ-59FF0D', 'REQ-532492']"
+    }
+   ],
+   "reply_excerpt": "# Dashboard de supervision - Agent Support\n\nFenêtre: **2** dernières exécutions\n\n| Taux de succès | Latence moyenne | Latence p95 | Coût total |\n|---|---|---|---|\n| **100.0 %** | **6396 ms** | 6533 ms | **$0.0003** |\n\n## Alertes\n\n| Alerte | Valeur | Seuil |\n|---|---|---|\n| Alerte Latence | 6396 ms |"
+  },
+  {
+   "id": "I07",
+   "type": "integration",
+   "title": "/dashboard n'appelle jamais le LLM (routage If-Else)",
+   "passed": true,
+   "seconds": 20.7,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'Aucune exécution'"
+    },
+    {
+     "check": "mock_log_not_contains",
+     "ok": true,
+     "detail": "le LLM a reçu un message contenant '/dashboard'"
+    }
+   ],
+   "reply_excerpt": "Aucune exécution enregistrée. Posez d'abord quelques questions à l'agent, ou tapez `/dashboard demo` pour des données de démonstration.\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_I07_69pbd6d2\\logs (0 executions enregistrees, fichier absent)_\n"
+  },
+  {
+   "id": "P01",
+   "type": "policy",
+   "title": "Email masqué dans les logs",
+   "passed": true,
+   "seconds": 27.9,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "csv_not_contains",
+     "ok": true,
+     "detail": "texte interdit dans les logs: 'test@mail.com'"
+    },
+    {
+     "check": "csv_contains",
+     "ok": true,
+     "detail": "texte attendu dans les logs: '[EMAIL]'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-572C2C` · succes · 6936 ms · 2 étapes · ~$0.000139 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 6929 ms ✓\n- 🔧 `get_order_status` 7 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_P01_d6gz8gar\\logs "
+  },
+  {
+   "id": "P02",
+   "type": "policy",
+   "title": "Numéro de carte masqué dans les logs",
+   "passed": true,
+   "seconds": 27.8,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "csv_not_contains",
+     "ok": true,
+     "detail": "texte interdit dans les logs: '4111 1111 1111 1111'"
+    },
+    {
+     "check": "csv_contains",
+     "ok": true,
+     "detail": "texte attendu dans les logs: '[CARTE]'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"ticket_id\": \"TCK-AE712E\", \"statut\": \"cree\", \"message\": \"Un conseiller vous recontactera sous 24h.\"}\n\n---\n`REQ-F5D204` · succes · 6936 ms · 2 étapes · ~$0.000164 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 6926 ms ✓\n- 🔧 `create_ticket` 10 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_P0"
+  },
+  {
+   "id": "P03",
+   "type": "policy",
+   "title": "Mot de passe masqué dans les logs",
+   "passed": true,
+   "seconds": 28.3,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "csv_not_contains",
+     "ok": true,
+     "detail": "texte interdit dans les logs: 'Secret123'"
+    },
+    {
+     "check": "csv_contains",
+     "ok": true,
+     "detail": "texte attendu dans les logs: '[SECRET]'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-3BCC3D` · succes · 6531 ms · 2 étapes · ~$0.000139 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 6525 ms ✓\n- 🔧 `get_order_status` 6 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_P03_f0esj56u\\logs "
+  },
+  {
+   "id": "P04",
+   "type": "policy",
+   "title": "La clé API n'est jamais écrite dans les logs",
+   "passed": true,
+   "seconds": 27.5,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "csv_not_contains",
+     "ok": true,
+     "detail": "texte interdit dans les logs: 'sk-test-SECRET-KEY'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-0C78A4` · succes · 7389 ms · 2 étapes · ~$0.000137 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 7378 ms ✓\n- 🔧 `get_order_status` 11 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_P04_5i9ylvwb\\logs"
+  },
+  {
+   "id": "P05",
+   "type": "policy",
+   "title": "Alerte Latence quand la moyenne dépasse 5000 ms",
+   "passed": true,
+   "seconds": 19.4,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'Alerte Latence'"
+    }
+   ],
+   "reply_excerpt": "# Dashboard de supervision - Agent Support\n\nFenêtre: **5** dernières exécutions\n\n| Taux de succès | Latence moyenne | Latence p95 | Coût total |\n|---|---|---|---|\n| **100.0 %** | **9000 ms** | 9000 ms | **$0.0005** |\n\n## Alertes\n\n| Alerte | Valeur | Seuil |\n|---|---|---|\n| Alerte Latence | 9000 ms |"
+  },
+  {
+   "id": "P06",
+   "type": "policy",
+   "title": "Alerte Taux d'échec quand plus de 20 % d'erreurs",
+   "passed": true,
+   "seconds": 24.1,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: \"Alerte Taux d'échec\""
+    }
+   ],
+   "reply_excerpt": "# Dashboard de supervision - Agent Support\n\nFenêtre: **5** dernières exécutions\n\n| Taux de succès | Latence moyenne | Latence p95 | Coût total |\n|---|---|---|---|\n| **40.0 %** | **100 ms** | 100 ms | **$0.0005** |\n\n## Alertes\n\n| Alerte | Valeur | Seuil |\n|---|---|---|\n| Alerte Taux d'échec | 60.0 % "
+  },
+  {
+   "id": "P07",
+   "type": "policy",
+   "title": "Alerte Coût quand le budget de 0,50 USD est dépassé",
+   "passed": true,
+   "seconds": 23.7,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'Alerte Coût'"
+    }
+   ],
+   "reply_excerpt": "# Dashboard de supervision - Agent Support\n\nFenêtre: **3** dernières exécutions\n\n| Taux de succès | Latence moyenne | Latence p95 | Coût total |\n|---|---|---|---|\n| **100.0 %** | **100 ms** | 100 ms | **$1.2000** |\n\n## Alertes\n\n| Alerte | Valeur | Seuil |\n|---|---|---|\n| Alerte Coût | $1.2000 | $0.5"
+  },
+  {
+   "id": "P08",
+   "type": "policy",
+   "title": "Aucune alerte quand tout va bien",
+   "passed": true,
+   "seconds": 22.2,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'Aucune alerte active'"
+    }
+   ],
+   "reply_excerpt": "# Dashboard de supervision - Agent Support\n\nFenêtre: **5** dernières exécutions\n\n| Taux de succès | Latence moyenne | Latence p95 | Coût total |\n|---|---|---|---|\n| **100.0 %** | **100 ms** | 100 ms | **$0.0005** |\n\n## Alertes\n\nAucune alerte active.\n\n## Dernières exécutions\n\n| Correlation ID | Statu"
+  },
+  {
+   "id": "P09",
+   "type": "policy",
+   "title": "L'alerte s'affiche aussi sous la réponse de l'agent",
+   "passed": true,
+   "seconds": 24.6,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: \"Alerte Taux d'échec\""
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-C65D6E` · succes · 5565 ms · 2 étapes · ~$0.000137 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 5559 ms ✓\n- 🔧 `get_order_status` 6 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_P09_02dq840s\\logs "
+  },
+  {
+   "id": "B01",
+   "type": "mauvaise_entree",
+   "title": "Commande inconnue: réponse propre, pas d'erreur système",
+   "passed": true,
+   "seconds": 24.2,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "tools_called",
+     "ok": true,
+     "detail": "outils appelés: ['get_order_status'] (attendu ['get_order_status'])"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: 'introuvable'"
+    },
+    {
+     "check": "exec_field",
+     "ok": true,
+     "detail": "statut = 'succes'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"introuvable\", \"detail\": \"Aucune commande avec ce numero.\"}\n\n---\n`REQ-69DCD7` · succes · 5560 ms · 2 étapes · ~$0.000135 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 5555 ms ✓\n- 🔧 `get_order_status` 5 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_B01_dvfi7ukc\\logs (1 executions"
+  },
+  {
+   "id": "B02",
+   "type": "mauvaise_entree",
+   "title": "Panne de l'outil commande (mock panne): statut erreur tracé",
+   "passed": true,
+   "seconds": 24.1,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "exec_field",
+     "ok": true,
+     "detail": "statut = 'erreur'"
+    },
+    {
+     "check": "exec_field",
+     "ok": true,
+     "detail": "erreur = '{\"erreur\": \"Service commandes indisponible (simulation)\"}'"
+    },
+    {
+     "check": "reply_contains",
+     "ok": true,
+     "detail": "texte attendu: '✗'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"erreur\": \"Service commandes indisponible (simulation)\"}\n\n---\n`REQ-D8083A` · erreur · 5538 ms · 2 étapes · ~$0.000132 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 5522 ms ✓\n- 🔧 `get_order_status` 16 ms ✗\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_B02_wkwiu99q\\logs (1 executions enregistree"
+  },
+  {
+   "id": "B03",
+   "type": "mauvaise_entree",
+   "title": "Outil lent (mock timeout): durée de l'outil mesurée (>= 3,5 s)",
+   "passed": true,
+   "seconds": 26.7,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "step_duration_gt",
+     "ok": true,
+     "detail": "durées de get_order_status: [4022] ms (min attendu 3500)"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-3F1EC0` · succes · 9345 ms · 2 étapes · ~$0.000137 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 5323 ms ✓\n- 🔧 `get_order_status` 4022 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_B03_d55e0hs4\\lo"
+  },
+  {
+   "id": "B04",
+   "type": "mauvaise_entree",
+   "title": "Message très long (5000 caractères): pas de crash",
+   "passed": true,
+   "seconds": 24.4,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "reply_regex",
+     "ok": true,
+     "detail": "motif attendu: `REQ-[A-F0-9]{6}`"
+    }
+   ],
+   "reply_excerpt": "Bonjour ! Comment puis-je vous aider ?\n\n---\n`REQ-4015EF` · succes · 5317 ms · 1 étapes · ~$0.000250 (tokens estimés)\n- 🧠 `agent_llm (1 appel)` 5317 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_B04_c9vp9vj_\\logs (1 executions enregistrees, fichier present)_\n⚠️ **Alerte Latence**: 5317 ms (seuil 50"
+  },
+  {
+   "id": "B05",
+   "type": "mauvaise_entree",
+   "title": "Texte de type injection SQL: pas de crash, logs intacts",
+   "passed": true,
+   "seconds": 23.9,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "csv_parseable",
+     "ok": true,
+     "detail": "1 lignes lues"
+    },
+    {
+     "check": "csv_parseable",
+     "ok": true,
+     "detail": "2 lignes lues"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"en_preparation\", \"detail\": \"En preparation, expedition prevue demain.\"}\n\n---\n`REQ-8E3DED` · succes · 5404 ms · 2 étapes · ~$0.000137 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 5398 ms ✓\n- 🔧 `get_order_status` 6 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_B05_6z2en1mu\\logs "
+  },
+  {
+   "id": "B06",
+   "type": "mauvaise_entree",
+   "title": "Message en arabe: traité et loggé en Unicode",
+   "passed": true,
+   "seconds": 23.8,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "tools_called",
+     "ok": true,
+     "detail": "outils appelés: ['get_order_status'] (attendu ['get_order_status'])"
+    },
+    {
+     "check": "csv_contains",
+     "ok": true,
+     "detail": "texte attendu dans les logs: 'وين'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"statut\": \"expediee\", \"detail\": \"Expediee le 22/10, arrivee prevue le 27/10 (transporteur Amana).\"}\n\n---\n`REQ-711E7E` · succes · 5388 ms · 2 étapes · ~$0.000140 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 5382 ms ✓\n- 🔧 `get_order_status` 6 ms ✓\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_B"
+  },
+  {
+   "id": "B07",
+   "type": "mauvaise_entree",
+   "title": "Panne de l'outil FAQ (mock panne): statut erreur tracé",
+   "passed": true,
+   "seconds": 21.3,
+   "checks": [
+    {
+     "check": "run_ok",
+     "ok": true,
+     "detail": "code retour 0, réponse non vide"
+    },
+    {
+     "check": "exec_field",
+     "ok": true,
+     "detail": "statut = 'erreur'"
+    }
+   ],
+   "reply_excerpt": "Resultat: {\"erreur\": \"Service FAQ indisponible (simulation)\"}\n\n---\n`REQ-E6DB62` · erreur · 3298 ms · 2 étapes · ~$0.000139 (tokens estimés)\n- 🧠 `agent_llm (2 appels)` 3280 ms ✓\n- 🔧 `search_faq` 18 ms ✗\n\n_logs: C:\\Users\\HP\\AppData\\Local\\Temp\\obs_B07_qzxhfzj0\\logs (1 executions enregistrees, fichier p"
+  }
+ ]
+}
