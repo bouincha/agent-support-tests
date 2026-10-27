@@ -1,7 +1,6 @@
 # Agent Support Client: tests automatisés et CI/CD (Atelier Jour 22)
 
-![CI](https://github.com/VOTRE-COMPTE/VOTRE-REPO/actions/workflows/ci.yml/badge.svg)
-
+![CI](https://github.com/bouincha/agent-support-tests/actions/workflows/ci.yml/badge.svg)
 > Remplacer `VOTRE-COMPTE/VOTRE-REPO` par votre dépôt GitHub: le badge devient vert quand la suite passe.
 
 ## Principe (low-code)
